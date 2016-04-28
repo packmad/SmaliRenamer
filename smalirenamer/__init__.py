@@ -2,9 +2,9 @@ import smalirenamer.SmaliRenamer as sr
 
 
 if __name__ == "__main__":
-    smaliRenamer = sr.SmaliRenamer("/home/simo/Downloads/decchinese/BancoPosta_v5.0_apkpure.com/smali/")
-    smaliRenamer.sanitize("ᖮپᓭᓮリ.smali")
-
+    smaliRenamer = sr.SmaliRenamer("/home/simo/Downloads/decchinese/pid/smali/")
+    smaliRenamer.run()
+    #smaliRenamer.sanitize("ʻ.smali")
 
 
 '''
@@ -15,6 +15,8 @@ TODO TESTS
 te$ˊ.smali
 ٻ$ˊ.smali
 dN$if$if$ˊ.smali
+ᑊ.smali=ᑊ.smali
+ʻ.smali=ʻ.smali
 
 a.smali
 CoN.smali
