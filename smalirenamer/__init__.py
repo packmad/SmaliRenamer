@@ -1,28 +1,14 @@
 import smalirenamer.SmaliRenamer as sr
+import datetime
 
 
 if __name__ == "__main__":
-    smaliRenamer = sr.SmaliRenamer("/home/simo/Downloads/decchinese/pid/smali/")
+    decompiledApkFolder = "/home/simo/Downloads/decchinese/bp/"  #TODO parse from cmd line
+    t1 = datetime.datetime.now()
+    smaliRenamer = sr.SmaliRenamer(decompiledApkFolder)
     smaliRenamer.run()
-    #smaliRenamer.sanitize("ʻ.smali")
+    t2 = datetime.datetime.now()
+    print("Execution time for '" + decompiledApkFolder + "' is: " + str((t2-t1)))
 
-
-'''
-TODO TESTS
-
-ᓐ.smali
-ᖮپᓭᓮリ.smali
-te$ˊ.smali
-ٻ$ˊ.smali
-dN$if$if$ˊ.smali
-ᑊ.smali=ᑊ.smali
-ʻ.smali=ʻ.smali
-
-a.smali
-CoN.smali
-zzq$zzc.smali
-StaggeredGridLayoutManager$LazySpanLookup$FullSpanItem.smali
-
-'''
 
 
