@@ -20,6 +20,7 @@ class SmaliRenamer(object):
     smaliFolder = ""
     manifest = ""
     mapping = {}
+    compiledKeysRegex = ""  #TODO what?
 
     def __init__(self, decompiledApkFolder):
         self.check_if_is_folder_and_exist(decompiledApkFolder)
@@ -39,9 +40,14 @@ class SmaliRenamer(object):
     def run(self):
         print("Generating mapping and renaming files in: " + self.smaliFolder)
         self.generate_mapping_and_rename_files()
-        print("Mapping size: " + str(len(self.mapping)))
-        print("Replacing all occurrences in files..." + self.smaliFolder)
-        self.replace_occurrences_in_files()
+        mappingSize = len(self.mapping)
+        print("Mapping size: " + str(mappingSize))
+        if mappingSize > 0:
+            self.compiledKeysRegex = re.compile('|'.join(re.escape(s) for s in self.mapping))  # Compiled keys regex
+            print("Replacing all occurrences in files..." + self.smaliFolder)
+            self.replace_occurrences_in_files()
+        else:
+            print("No classes with bad name, skip replacing.")
         print("Job done!")
 
     def generate_mapping_and_rename_files(self):
@@ -65,17 +71,11 @@ class SmaliRenamer(object):
         self.edit_file_inplace(self.manifest)  # For the AndroidManifest.xml
 
     def edit_file_inplace(self, filename):
+        """" Search for every references to the old classes names and replace them with the new names """
         with fileinput.FileInput(filename, inplace=True) as openFile:
             for line in openFile:
-                line = self.search_and_replace(line)
-                print(line)  # this print the line into the file
-
-    def search_and_replace(self, line):
-        """" Search for every references to the old classes names and patch them with the new names """
-        for key, value in self.mapping.items():
-            if key in line:
-                line = line.replace(key, value)
-        return line
+                line = self.compiledKeysRegex.sub(lambda x: self.mapping[x.group()], line)  # GGWPBB
+                print(line)  # Print the line into the file
 
     def check_and_add(self, name):
         """ If the name contains invalid characters generate a new name and add the new mapping """
