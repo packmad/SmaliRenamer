@@ -2,12 +2,6 @@ import fileinput
 import os
 import re
 
-'''
-TODO:
-1) os paths independent with os.path
-2) errors/exceptions
-'''
-
 
 class SmaliRenamer(object):
     allowedClassName = re.compile("^[A-Za-z]([a-zA-Z0-9_]*\$?)*.smali$")
@@ -17,7 +11,6 @@ class SmaliRenamer(object):
     smaliExt = ".smali"
     mapping = {}
 
-
     def __init__(self, decompiledApkFolder):
         self.check_if_is_folder_and_exist(decompiledApkFolder)
         self.smaliFolder = os.path.join(decompiledApkFolder, "smali/")
@@ -26,7 +19,8 @@ class SmaliRenamer(object):
         if not os.path.exists(self.manifest):
             raise Exception("The AndroidManifest.xml in path '" + self.manifest + "' doesn't exists")
 
-    def check_if_is_folder_and_exist(self, folder):
+    @staticmethod
+    def check_if_is_folder_and_exist(folder):
         if not os.path.isdir(folder):
             raise Exception("The file '" + folder + "' isn't a folder")
         if not os.path.exists(folder):
