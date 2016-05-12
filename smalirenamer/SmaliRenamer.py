@@ -20,7 +20,7 @@ class SmaliRenamer(object):
     smaliFolder = ""
     manifest = ""
     mapping = {}
-    compiledKeysRegex = ""  #TODO what?
+    compiledKeysRegex = ""  #TODO how init?
 
     def __init__(self, decompiledApkFolder):
         self.check_if_is_folder_and_exist(decompiledApkFolder)
