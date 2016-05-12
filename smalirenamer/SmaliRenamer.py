@@ -4,9 +4,8 @@ import re
 
 '''
 TODO:
-1) improve execution time with regex
-2) os paths independent with os.path
-3) errors/exceptions
+1) os paths independent with os.path
+2) errors/exceptions
 '''
 
 
