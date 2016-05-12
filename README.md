@@ -7,7 +7,8 @@ will be renamed with a default prefix and an incremental number.
 
 After this phase every occurrences in the smali code is renamed.
 
-After that you can run the rebuild with ApkTool. Enjoy :)
+Finally you can rebuild with ApkTool without errors. Enjoy :)
 
+## Help
+I'm a python newbie, any help/suggestions will be appreciated!
 
-I'm a python newbie and there are lot's of TODO any help/suggestions will be appreciated!
