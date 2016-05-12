@@ -10,22 +10,19 @@ TODO:
 
 
 class SmaliRenamer(object):
-    allowedClassNameRegex = "^[A-Za-z]([a-zA-Z0-9_]*\$?)*.smali$"
-    allowedClassName = re.compile(allowedClassNameRegex)
-    allowedNameRegex = "^[a-zA-Z0-9_]*$"
-    allowedName = re.compile(allowedNameRegex)
+    allowedClassName = re.compile("^[A-Za-z]([a-zA-Z0-9_]*\$?)*.smali$")
+    allowedName = re.compile("^[a-zA-Z0-9_]*$")
     defaultClassPrefixName = "Class"
-    smali = ".smali"
-    smaliFolder = ""
-    manifest = ""
+    compiledKeysRegex = ""  # re.compile
+    smaliExt = ".smali"
     mapping = {}
-    compiledKeysRegex = ""  #TODO how init?
+
 
     def __init__(self, decompiledApkFolder):
         self.check_if_is_folder_and_exist(decompiledApkFolder)
-        self.smaliFolder = decompiledApkFolder + "smali/"
+        self.smaliFolder = os.path.join(decompiledApkFolder, "smali/")
         self.check_if_is_folder_and_exist(self.smaliFolder)
-        self.manifest = decompiledApkFolder + "AndroidManifest.xml"
+        self.manifest = os.path.join(decompiledApkFolder, "AndroidManifest.xml")
         if not os.path.exists(self.manifest):
             raise Exception("The AndroidManifest.xml in path '" + self.manifest + "' doesn't exists")
 
@@ -43,7 +40,7 @@ class SmaliRenamer(object):
         print("Mapping size: " + str(mappingSize))
         if mappingSize > 0:
             self.compiledKeysRegex = re.compile('|'.join(re.escape(s) for s in self.mapping))  # Compiled keys regex
-            print("Replacing all occurrences in files..." + self.smaliFolder)
+            print("Replacing all occurrences in files...")
             self.replace_occurrences_in_files()
         else:
             print("No classes with bad name, skip replacing.")
@@ -51,22 +48,22 @@ class SmaliRenamer(object):
 
     def generate_mapping_and_rename_files(self):
         for root, dirs, files in os.walk(self.smaliFolder, topdown=False):
-            for name in files:  # print(os.path.join(root, name))
-                if name.endswith(self.smali):
+            for name in files:
+                if name.endswith(self.smaliExt):
                     if not self.allowedClassName.match(name):  # Loop all smali files with non printable names
                         newName = self.sanitize(name)
                         if newName != name:
-                            os.rename(root + "/" + name, root + "/" + newName)  # Rename the files with new names
+                            os.rename(os.path.join(root, name), os.path.join(root, newName))  # Rename the files
                 else:
-                    raise Exception("Only .smali file allowed: " + root + "/" + name)
+                    raise Exception("Only .smali file allowed: " + os.path.join(root, name))
             for name in dirs:
                 if not self.allowedName.match(name):
-                    raise Exception("Folder with invalid name: " + root + "/" + name)
+                    raise Exception("Folder with invalid name: " + os.path.join(root, name))
 
     def replace_occurrences_in_files(self):
         for root, dirs, files in os.walk(self.smaliFolder, topdown=False):  # For all .smali files
             for file in files:
-                self.edit_file_inplace(root + "/" + file)
+                self.edit_file_inplace(os.path.join(root, file))
         self.edit_file_inplace(self.manifest)  # For the AndroidManifest.xml
 
     def edit_file_inplace(self, filename):
@@ -89,7 +86,7 @@ class SmaliRenamer(object):
 
     def sanitize(self, fileName):
         """ Replace the obfuscated class name with ClassX (X incremental integer) and return the new one """
-        name = fileName[:-len(self.smali)]
+        name = fileName[:-len(self.smaliExt)]
         newName=""
         split = name.split("$")
         if len(split) > 1:
@@ -99,4 +96,4 @@ class SmaliRenamer(object):
             newName = newName[:-1]
         else:
             newName = self.check_and_add(name)
-        return newName + self.smali
+        return newName + self.smaliExt

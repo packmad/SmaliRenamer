@@ -1,6 +1,7 @@
 import smalirenamer.SmaliRenamer as sr
 import unittest
 
+
 class TestStringMethods(unittest.TestCase):  #TODO this is only a working code whence to start
 
     def setUp(self):
