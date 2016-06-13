@@ -81,11 +81,11 @@ class SmaliRenamer(object):
     def sanitize(self, fileName):
         """ Replace the obfuscated class name with ClassX (X incremental integer) and return the new one """
         name = fileName[:-len(self.smaliExt)]
-        newName=""
+        newName = ""
         split = name.split("$")
         if len(split) > 1:
             for s in split:
-                newName += self.check_and_add(s) # Generate the mapping
+                newName += self.check_and_add(s)  # Generate the mapping
                 newName += "$"
             newName = newName[:-1]
         else:
