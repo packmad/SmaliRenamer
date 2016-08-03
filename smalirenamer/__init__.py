@@ -43,7 +43,7 @@ def phase_align_sign(apkFile):
 
 def batch_work(root):
     for f in os.listdir(root):
-        file = os.path.join(root, f);
+        file = os.path.join(root, f)
         if os.path.isfile(file):
             filename, file_extension = os.path.splitext(file)
             if file_extension == ".apk":
