@@ -67,14 +67,12 @@ def single_work(apkFile):
     phase_align_sign(os.path.join(decompiledApkFolder, "dist", os.path.basename(apkFile)))
 
 
-if __name__ == "__main__":  # TODO command line options for phases
+if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Only one argument needed!")
         sys.exit(-1)
     arg = sys.argv[1]
-    if os.path.isfile(arg):
-        single_work(arg)
-    elif os.path.isdir(arg):
-        batch_work(arg)
+    if os.path.isdir(arg):
+        phase_rename(arg)
     else:
-        raise Exception("The argument isn't an existing file/folder")
+        raise Exception("The argument isn't an existing folder")
