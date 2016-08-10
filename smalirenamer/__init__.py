@@ -68,4 +68,4 @@ def single_work(apkFile):
 
 
 if __name__ == "__main__":
-    single_work("")
+    single_work("/home/simo/Downloads/posteitaliane.posteapp.appposteid-2.apk")

@@ -4,7 +4,7 @@ import re
 
 
 class SmaliRenamer(object):
-    allowedClassName = re.compile("^[A-Za-z]([a-zA-Z0-9_]*\$?)*.smali$")
+    allowedClassName = re.compile("^[a-zA-Z0-9_\$]*\.smali$")
     allowedName = re.compile("^[a-zA-Z0-9_]*$")
     defaultClassPrefixName = "Class"
     compiledKeysRegex = ""  # re.compile
@@ -44,13 +44,10 @@ class SmaliRenamer(object):
         for root, dirs, files in os.walk(self.smaliFolder, topdown=False):
             for name in files:
                 if name.endswith(self.smaliExt):
-                    split = name[:-6].split("$")
-                    for s in split:
-                        if not self.allowedName.match(s) or s == 'if':
-                            newName = self.sanitize(name)
-                            if newName != name:
-                                os.rename(os.path.join(root,name), os.path.join(root, newName))  # Rename the files
-                                break
+                    if not self.allowedClassName.match(name):  # Loop all smali files with non printable names
+                        newName = self.sanitize(name)
+                        if newName != name:
+                            os.rename(os.path.join(root, name), os.path.join(root, newName))  # Rename the files
                 else:
                     raise Exception("Only .smali file allowed: " + os.path.join(root, name))
             for name in dirs:

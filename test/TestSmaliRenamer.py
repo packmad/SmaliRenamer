@@ -16,7 +16,7 @@ class TestSmaliRenamer(unittest.TestCase):
         '''
 
     def test_not_allowedClassName(self):
-        names = ["ᓐ.smali", "ᖮپᓭᓮリ.smali", "te$ˊ.smali", "ٻ$ˊ.smali", "dN$if$if$ˊ.smali", "ᑊ.smali=ᑊ.smali", "ʻ.smali=ʻ.smali"]
+        names = ["ᓐ.smali", "ᖮپᓭᓮリ.smali", "te$ˊ.smali", "ٻ$ˊ.smali", "dN$if$if$ˊ.smali", "ᑊ.smali=ᑊ.smali", "ʻ.smali=ʻ.smali", "AndroidInstrumentationModule$$ModuleAdapter$ˋ.smali"]
         for name in names:
             self.assertFalse(sr.SmaliRenamer.allowedClassName.match(name))
 
