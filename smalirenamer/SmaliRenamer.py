@@ -44,10 +44,13 @@ class SmaliRenamer(object):
         for root, dirs, files in os.walk(self.smaliFolder, topdown=False):
             for name in files:
                 if name.endswith(self.smaliExt):
-                    if not self.allowedClassName.match(name):  # Loop all smali files with non printable names
-                        newName = self.sanitize(name)
-                        if newName != name:
-                            os.rename(os.path.join(root, name), os.path.join(root, newName))  # Rename the files
+                    split = name[:-6].split("$")
+                    for s in split:
+                        if not self.allowedName.match(s) or s == 'if':
+                            newName = self.sanitize(name)
+                            if newName != name:
+                                os.rename(os.path.join(root,name), os.path.join(root, newName))  # Rename the files
+                                break
                 else:
                     raise Exception("Only .smali file allowed: " + os.path.join(root, name))
             for name in dirs:
@@ -69,7 +72,7 @@ class SmaliRenamer(object):
 
     def check_and_add(self, name):
         """ If the name contains invalid characters generate a new name and add the new mapping """
-        if not self.allowedName.match(name):
+        if not self.allowedName.match(name) or name == 'if':
             if name not in self.mapping:
                 tmpName = self.defaultClassPrefixName + str(len(self.mapping))
                 self.mapping[name] = tmpName

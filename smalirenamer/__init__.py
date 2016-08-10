@@ -68,11 +68,4 @@ def single_work(apkFile):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Only one argument needed!")
-        sys.exit(-1)
-    arg = sys.argv[1]
-    if os.path.isdir(arg):
-        phase_rename(arg)
-    else:
-        raise Exception("The argument isn't an existing folder")
+    single_work("")
